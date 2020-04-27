@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plot
-import math
 import numpy as np
 from scipy import signal
 
@@ -10,18 +9,20 @@ def _EXIT_():
 
 
 def getResult():
-    signal_1 = np.sin(np.linspace(0, 60, 1024))
+    increment = 2
+    signal_1 = signal.sawtooth(np.linspace(0, 60, 1024))
     spectr = np.fft.fft((signal_1))
-    changed_spectr = np.fft.fft(signal_1)
-    changed_spectr = np.insert(changed_spectr, 512, np.zeros(255))
-    signal_2 = np.fft.ifft(changed_spectr)
+    signal_2 = signal_1
+    for i in range(0, len(signal_2) * increment, increment):
+        signal_2 = np.insert(signal_2, i, 0)
+    changed_spectr = np.fft.fft(signal_2)
 
     return {'signal_1': signal_1, 'spectr': spectr, 'changed_spectr': changed_spectr, 'signal_2': signal_2}
 
 
 
 if __name__ == "__main__":
-    print('run task10')
+    print('run task12')
     data = getResult()
     plot.subplot(221)
     plot.plot(data['signal_1'])
